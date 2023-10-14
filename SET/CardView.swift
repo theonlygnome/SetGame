@@ -9,9 +9,11 @@ import SwiftUI
 
 struct CardView: View {
     let card: SetCard.Card
+    private let responseValue: CGFloat
     
     init(_ card: SetCard.Card) {
         self.card = card
+        responseValue = card.isInUnmatchedSet ? 0.2 : 0
     }
     
     var body: some View {
@@ -40,6 +42,9 @@ struct CardView: View {
             .padding()
             
         }
+        .rotationEffect(Angle.degrees(card.isMatched ? 180 : 0))
+        .animation(Animation.easeInOut, value: card.isMatched)
+        .animation(Animation.spring(response: responseValue, dampingFraction: 0.2, blendDuration: 0.2), value: card.isInUnmatchedSet)
     }
 }
 

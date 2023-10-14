@@ -92,11 +92,6 @@ struct SetCard {
     }
     
     mutating func choose(_ card: Card) {
-        // replace any matched set now that a new card has been selected
-//        if matchedSetExists {
-//            replaceDeal()
-//            matchedSetExists = false
-//        }
         
         if let chosenIndex = dealtCards.firstIndex(where: { $0.id == card.id }) {
             print("Chose card:\(dealtCards[chosenIndex])")
@@ -145,6 +140,12 @@ struct SetCard {
             }
         }
     }
+    
+    mutating func shuffle() {
+        dealtCards.shuffle()
+    }
+    
+    // MARK: - private
     
     private mutating func replaceDeal() {
         for index in dealtCards.indices {
@@ -196,6 +197,8 @@ struct SetCard {
         
         return madeASet
     }
+    
+    // MARK: - Card
     
     struct Card: Hashable, Identifiable {
         var id: Int

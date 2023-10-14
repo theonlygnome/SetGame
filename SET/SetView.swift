@@ -19,8 +19,6 @@ struct SetView: View {
     private let aspectRatio: CGFloat = 2/3
     private let deckWidth: CGFloat = 50
     
-    
-    
     var body: some View {
         VStack {
             Button(action: {
@@ -31,6 +29,14 @@ struct SetView: View {
             cards
             HStack {
                 deck
+                Spacer()
+                Button(action: {
+                    withAnimation {
+                        setGame.shuffle()
+                    }
+                }, label: {
+                    Text("Shuffle")
+                })
                 Spacer()
                 discardDeck
             }
