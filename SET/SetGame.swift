@@ -23,6 +23,10 @@ class SetGame: ObservableObject {
         model.discardedCards
     }
     
+    var matchedSetExists: Bool {
+        model.matchedSetExists
+    }
+    
     func newGame() {
         model = SetCard()
         deal()
@@ -31,26 +35,20 @@ class SetGame: ObservableObject {
         deal()
     }
     
+    func getCardsToDeal() -> [Card] {
+        model.getCardsToDeal()
+    }
+    
+    func dealCard(_ card: Card) {
+        model.dealCard(card)
+    }
+    
     func deal() {
         model.deal()
     }
     
     func choose(_ card: Card) {
         model.choose(card)
-    }
-        
-    func getShapeFromString(_ shapeString: String) -> any Shape {
-        
-        switch shapeString {
-        case "Diamond":
-            return Diamond()
-        case "Oval":
-            return RoundedRectangle(cornerRadius: 25)
-        case "Squiggle":
-            return Rectangle()
-        default:
-            return Circle() // This is an error
-        }
     }
 }
 

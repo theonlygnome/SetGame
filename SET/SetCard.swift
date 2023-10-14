@@ -14,6 +14,12 @@ struct SetCard {
     private(set) var cards: Array<Card>
     private(set) var dealtCards: Array<Card>
     
+    var matchedSetExists: Bool {
+        // A matched set exists
+        dealtCards.filter { $0.isMatched }.count == 3 &&
+        dealtCards.filter { $0.isSelected }.count == 1
+    }
+    
     var undealtCards: [Card] {
         cards.filter { !$0.isDealt && !$0.isDiscarded }
     }
@@ -23,7 +29,6 @@ struct SetCard {
     }
     
     private var cardCount : Int
-    private var replaceMatchedCards = false
     
     init() {
         dealtCards = [Card]()
@@ -47,12 +52,35 @@ struct SetCard {
         // cards.shuffle()
     }
     
+    mutating func getCardsToDeal() -> [Card] {
+        var cardsToDeal = [Card]()
+        if cardCount < cards.count {
+            for index in cardCount ... cardCount + 2 {
+                cardsToDeal.append(cards[index])
+            }
+            cardCount += 3
+        }
+        
+        return cardsToDeal
+    }
+    
+    mutating func dealCard(_ card: Card) {
+        if let index = cards.firstIndex(where: { $0.id == card.id} ) {
+            cards[index].isDealt = true
+            if let replacementIndex = dealtCards.firstIndex(where: { $0.isMatched }) {
+                var cardToDiscard = dealtCards[replacementIndex]
+                if let discardIndex = cards.firstIndex(where: { $0.id == cardToDiscard.id } ) {
+                    cards[discardIndex].isDiscarded = true
+                }
+                dealtCards[replacementIndex] = cards[index]
+            } else {
+                dealtCards.append(cards[index])
+            }
+        }
+    }
+    
     mutating func deal() {
 
-        if replaceMatchedCards {
-            replaceDeal()
-            replaceMatchedCards = false
-        } else {
             if cardCount < cards.count {
                 for index in cardCount ... cardCount + 2 {
                     cards[index].isDealt = true
@@ -60,15 +88,15 @@ struct SetCard {
                 }
                 cardCount += 3
             }
-        }
+        
     }
     
     mutating func choose(_ card: Card) {
         // replace any matched set now that a new card has been selected
-        if replaceMatchedCards {
-            replaceDeal()
-            replaceMatchedCards = false
-        }
+//        if matchedSetExists {
+//            replaceDeal()
+//            matchedSetExists = false
+//        }
         
         if let chosenIndex = dealtCards.firstIndex(where: { $0.id == card.id }) {
             print("Chose card:\(dealtCards[chosenIndex])")
@@ -81,50 +109,18 @@ struct SetCard {
 
             var madeASet = false
             if (sc.count == 3) {
-                // Check some game rules
-                if (sc[0].color == sc[1].color ) && (sc[0].color == sc[2].color) {
-                    madeASet = true
-                } else if (sc[0].number == sc[1].number ) && (sc[0].number == sc[2].number) {
-                    madeASet = true
-                } else if (sc[0].shape == sc[1].shape ) && (sc[0].shape == sc[2].shape) {
-                    madeASet = true
-                } else if (sc[0].shading == sc[1].shading ) && (sc[0].shading == sc[2].shading) {
-                    madeASet = true
-                } else if (sc[0].color != sc[1].color ) && (sc[0].color != sc[2].color) && (sc[1].color != sc[2].color) &&
-                            (sc[0].number != sc[1].number ) && (sc[0].number != sc[2].number) && (sc[1].number != sc[2].number) &&
-                            (sc[0].shape != sc[1].shape ) && (sc[0].shape != sc[2].shape) && (sc[1].shape != sc[2].shape) &&
-                            (sc[0].shading != sc[1].shading ) && (sc[0].shading != sc[2].shading) && (sc[1].shading != sc[2].shading) {
-                    madeASet = true
-                }
-                
-                if ((sc[0].color == sc[1].color ) && (sc[1].color != sc[2].color)) ||
-                   ((sc[0].color == sc[2].color) && (sc[1].color != sc[2].color)) ||
-                   ((sc[1].color == sc[2].color) && (sc[0].color != sc[1].color)) ||
-                    ((sc[0].number == sc[1].number ) && (sc[1].number != sc[2].number)) ||
-                       ((sc[0].number == sc[2].number) && (sc[1].number != sc[2].number)) ||
-                       ((sc[1].number == sc[2].number) && (sc[0].number != sc[1].number)) ||
-                    ((sc[0].shape == sc[1].shape ) && (sc[1].shape != sc[2].shape)) ||
-                       ((sc[0].shape == sc[2].shape) && (sc[1].shape != sc[2].shape)) ||
-                       ((sc[1].shape == sc[2].shape) && (sc[0].shape != sc[1].shape)) ||
-                    ((sc[0].shading == sc[1].shading ) && (sc[1].shading != sc[2].shading)) ||
-                       ((sc[0].shading == sc[2].shading) && (sc[1].shading != sc[2].shading)) ||
-                       ((sc[1].shading == sc[2].shading) && (sc[0].shading != sc[1].shading)) {
-                    madeASet = false
-                }
+                madeASet = isSet(sc)
                 
                 let index1 = dealtCards.firstIndex(of: sc[0])
                 let index2 = dealtCards.firstIndex(of: sc[1])
                 let index3 = dealtCards.firstIndex(of: sc[2])
                 
                 if (madeASet) {
-//                    dealtCards.remove(at: index3!)
-//                    dealtCards.remove(at: index2!)
-//                    dealtCards.remove(at: index1!)
-
                     dealtCards[index1!].isMatched = true
                     dealtCards[index2!].isMatched = true
                     dealtCards[index3!].isMatched = true
-                    replaceMatchedCards = true
+                    
+                    // A set was made; deselect the set
                     for index in dealtCards.indices {
                         dealtCards[index].isSelected = false
                     }
@@ -143,7 +139,6 @@ struct SetCard {
 
                 for index in dealtCards.indices {
                     dealtCards[index].isSelected = false
-                    
                 }
                 
                 dealtCards[chosenIndex].isSelected = true
@@ -158,11 +153,48 @@ struct SetCard {
                     cards[card_index].isDiscarded = true
                 }
                 
+                cards[cardCount].isDealt = true
                 dealtCards[index] = cards[cardCount]
                 cardCount += 1
                 
             }
         }
+    }
+    
+    private func isSet(_ sc: [Card]) -> Bool {
+        var madeASet = false
+        // Check some game rules
+        if (sc[0].color == sc[1].color ) && (sc[0].color == sc[2].color) {
+            madeASet = true
+        } else if (sc[0].number == sc[1].number ) && (sc[0].number == sc[2].number) {
+            madeASet = true
+        } else if (sc[0].shape == sc[1].shape ) && (sc[0].shape == sc[2].shape) {
+            madeASet = true
+        } else if (sc[0].shading == sc[1].shading ) && (sc[0].shading == sc[2].shading) {
+            madeASet = true
+        } else if (sc[0].color != sc[1].color ) && (sc[0].color != sc[2].color) && (sc[1].color != sc[2].color) &&
+                    (sc[0].number != sc[1].number ) && (sc[0].number != sc[2].number) && (sc[1].number != sc[2].number) &&
+                    (sc[0].shape != sc[1].shape ) && (sc[0].shape != sc[2].shape) && (sc[1].shape != sc[2].shape) &&
+                    (sc[0].shading != sc[1].shading ) && (sc[0].shading != sc[2].shading) && (sc[1].shading != sc[2].shading) {
+            madeASet = true
+        }
+        
+        if ((sc[0].color == sc[1].color ) && (sc[1].color != sc[2].color)) ||
+           ((sc[0].color == sc[2].color) && (sc[1].color != sc[2].color)) ||
+           ((sc[1].color == sc[2].color) && (sc[0].color != sc[1].color)) ||
+            ((sc[0].number == sc[1].number ) && (sc[1].number != sc[2].number)) ||
+               ((sc[0].number == sc[2].number) && (sc[1].number != sc[2].number)) ||
+               ((sc[1].number == sc[2].number) && (sc[0].number != sc[1].number)) ||
+            ((sc[0].shape == sc[1].shape ) && (sc[1].shape != sc[2].shape)) ||
+               ((sc[0].shape == sc[2].shape) && (sc[1].shape != sc[2].shape)) ||
+               ((sc[1].shape == sc[2].shape) && (sc[0].shape != sc[1].shape)) ||
+            ((sc[0].shading == sc[1].shading ) && (sc[1].shading != sc[2].shading)) ||
+               ((sc[0].shading == sc[2].shading) && (sc[1].shading != sc[2].shading)) ||
+               ((sc[1].shading == sc[2].shading) && (sc[0].shading != sc[1].shading)) {
+            madeASet = false
+        }
+        
+        return madeASet
     }
     
     struct Card: Hashable, Identifiable {

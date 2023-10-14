@@ -13,8 +13,12 @@ struct SetView: View {
     @Namespace private var dealingNamespace
     @Namespace private var discardNamespace
     
+    private let dealAnimation: Animation = .spring(response: 0.5, dampingFraction: 0.825)
+    private let dealInterval: TimeInterval = 0.15
+    
     private let aspectRatio: CGFloat = 2/3
     private let deckWidth: CGFloat = 50
+    
     
     
     var body: some View {
@@ -39,9 +43,14 @@ struct SetView: View {
     private var cards: some View {
         AspectVGrid(setGame.cards, aspectRatio: 2/3) { card in
             CardView(card)
+                .matchedGeometryEffect(id: card.id, in: dealingNamespace)
+                .transition(AsymmetricTransition(insertion: .identity, removal: .identity))
                 .onTapGesture {
-                    //setGame.replaceDeal()
                     setGame.choose(card)
+
+                    if setGame.matchedSetExists {
+                        deal()
+                    }
                 }
         }
         .padding()
@@ -51,13 +60,13 @@ struct SetView: View {
         ZStack {
             ForEach(setGame.undealtCards) { card in
                 CardView(card)
-                   // .matchedGeometryEffect(id: card.id, in: dealingNamespace)
-                    //.transition(AsymmetricTransition(insertion: .identity, removal: .identity))
+                    .matchedGeometryEffect(id: card.id, in: dealingNamespace)
+                    .transition(AsymmetricTransition(insertion: .identity, removal: .identity))
             }
         }
         .frame(width: deckWidth, height: deckWidth / aspectRatio )
         .onTapGesture {
-            setGame.deal()
+            deal()
         }
     }
     
@@ -65,13 +74,23 @@ struct SetView: View {
         ZStack {
             ForEach(setGame.discardedCards) { card in
                 CardView(card)
-                   // .matchedGeometryEffect(id: card.id, in: discardNamespace)
-                   // .transition(AsymmetricTransition(insertion: .identity, removal: .identity))
+                    .matchedGeometryEffect(id: card.id, in: dealingNamespace)
+                    .transition(AsymmetricTransition(insertion: .identity, removal: .identity))
             }
         }
         .frame(width: deckWidth, height: deckWidth / aspectRatio )
     }
     
+    private func deal() {
+        var delay: TimeInterval = 0
+        let cards = setGame.getCardsToDeal()
+        for card in cards {
+            withAnimation(dealAnimation.delay(delay)) {
+                setGame.dealCard(card)
+            }
+            delay += dealInterval
+        }
+    }
 }
 
 struct CardView: View {
@@ -89,43 +108,18 @@ struct CardView: View {
                 .strokeBorder(card.isSelected ? .blue : .black, lineWidth: card.isSelected ? 4 : 2)
                 .opacity(card.isMatched ? 0.25 : 1)
                 .opacity(card.isInUnmatchedSet ? 0.5 : 1)
-            
             VStack {
                 if card.shape == "Diamond" {
                     ForEach(0 ..< card.number, id: \.self) {_ in
-                        if card.shading == 0 {
-                            Diamond()
-                                .stroke(card.color, lineWidth: 2)
-                        } else {
-                            Diamond()
-                                .stroke(card.color, lineWidth: 2)
-                                .fill(card.color)
-                                .opacity(card.shading)
-                        }
+                        DiamondFillAndStroke(card)
                     }
                 } else if card.shape == "Squiggle" {
                     ForEach(0 ..< card.number, id: \.self) {_ in
-                        if card.shading == 0 {
-                            Rectangle()
-                                .strokeBorder(card.color, lineWidth: 2)
-                        } else {
-                            Rectangle()
-                                .strokeBorder(card.color, lineWidth: 2)
-                                .fill(card.color)
-                                .opacity(card.shading)
-                        }
+                        SquiggleFillAndStroke(card)
                     }
                 } else {
                     ForEach(0 ..< card.number, id: \.self) {_ in
-                        if card.shading == 0 {
-                            RoundedRectangle(cornerRadius: 35)
-                                .strokeBorder(card.color, lineWidth: 2)
-                        } else {
-                            RoundedRectangle(cornerRadius: 35)
-                                .strokeBorder(card.color, lineWidth: 2)
-                                .fill(card.color)
-                                .opacity(card.shading)
-                        }
+                        OvalFillAndStroke(card)
                     }
                 }
             }
@@ -133,6 +127,69 @@ struct CardView: View {
             
         }
     }
+      
+    struct DiamondFillAndStroke: View {
+        let card: SetCard.Card
+        
+        init(_ card: SetCard.Card) {
+            self.card = card
+        }
+        
+        var body: some View {
+            if card.shading == 0 {
+                Diamond()
+                    .stroke(card.color, lineWidth: 2)
+            } else {
+                Diamond()
+                    .stroke(card.color, lineWidth: 2)
+                    .fill(card.color)
+                    .opacity(card.shading)
+            }
+        }
+    }
+    
+    struct SquiggleFillAndStroke: View {
+        
+        let card: SetCard.Card
+        
+        init(_ card: SetCard.Card) {
+            self.card = card
+        }
+        
+        var body: some View {
+            if card.shading == 0 {
+                Rectangle()
+                    .strokeBorder(card.color, lineWidth: 2)
+            } else {
+                Rectangle()
+                    .strokeBorder(card.color, lineWidth: 2)
+                    .fill(card.color)
+                    .opacity(card.shading)
+            }
+        }
+    }
+    
+    struct OvalFillAndStroke: View {
+        
+        let card: SetCard.Card
+        
+        init(_ card: SetCard.Card) {
+            self.card = card
+        }
+        
+        var body: some View {
+            if card.shading == 0 {
+                RoundedRectangle(cornerRadius: 35)
+                    .strokeBorder(card.color, lineWidth: 2)
+            } else {
+                RoundedRectangle(cornerRadius: 35)
+                    .strokeBorder(card.color, lineWidth: 2)
+                    .fill(card.color)
+                    .opacity(card.shading)
+            }
+        }
+    }
+        
 }
 
 struct Diamond: Shape {
