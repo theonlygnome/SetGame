@@ -14,6 +14,7 @@
 		B3C4F8382ACE2DCC00E75C7D /* SetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4F8372ACE2DCC00E75C7D /* SetCard.swift */; };
 		B3C4F83A2ACF05CB00E75C7D /* SetGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4F8392ACF05CB00E75C7D /* SetGame.swift */; };
 		B3C4F83C2ACF15A200E75C7D /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4F83B2ACF15A200E75C7D /* AspectVGrid.swift */; };
+		B3C4F8622ADA54E000E75C7D /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4F8612ADA54E000E75C7D /* CardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		B3C4F8372ACE2DCC00E75C7D /* SetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCard.swift; sourceTree = "<group>"; };
 		B3C4F8392ACF05CB00E75C7D /* SetGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGame.swift; sourceTree = "<group>"; };
 		B3C4F83B2ACF15A200E75C7D /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
+		B3C4F8612ADA54E000E75C7D /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 			children = (
 				B3C4F8292ACE2DA300E75C7D /* SETApp.swift */,
 				B3C4F82B2ACE2DA300E75C7D /* SetView.swift */,
+				B3C4F8612ADA54E000E75C7D /* CardView.swift */,
 				B3C4F83B2ACF15A200E75C7D /* AspectVGrid.swift */,
 				B3C4F8392ACF05CB00E75C7D /* SetGame.swift */,
 				B3C4F8372ACE2DCC00E75C7D /* SetCard.swift */,
@@ -148,6 +151,7 @@
 			files = (
 				B3C4F8382ACE2DCC00E75C7D /* SetCard.swift in Sources */,
 				B3C4F82C2ACE2DA300E75C7D /* SetView.swift in Sources */,
+				B3C4F8622ADA54E000E75C7D /* CardView.swift in Sources */,
 				B3C4F83A2ACF05CB00E75C7D /* SetGame.swift in Sources */,
 				B3C4F83C2ACF15A200E75C7D /* AspectVGrid.swift in Sources */,
 				B3C4F82A2ACE2DA300E75C7D /* SETApp.swift in Sources */,
