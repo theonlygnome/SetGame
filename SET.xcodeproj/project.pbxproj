@@ -15,6 +15,7 @@
 		B3C4F83A2ACF05CB00E75C7D /* SetGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4F8392ACF05CB00E75C7D /* SetGame.swift */; };
 		B3C4F83C2ACF15A200E75C7D /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4F83B2ACF15A200E75C7D /* AspectVGrid.swift */; };
 		B3C4F8622ADA54E000E75C7D /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4F8612ADA54E000E75C7D /* CardView.swift */; };
+		B3C4F8642ADC46FE00E75C7D /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4F8632ADC46FE00E75C7D /* Cardify.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		B3C4F8392ACF05CB00E75C7D /* SetGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGame.swift; sourceTree = "<group>"; };
 		B3C4F83B2ACF15A200E75C7D /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
 		B3C4F8612ADA54E000E75C7D /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		B3C4F8632ADC46FE00E75C7D /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				B3C4F8292ACE2DA300E75C7D /* SETApp.swift */,
 				B3C4F82B2ACE2DA300E75C7D /* SetView.swift */,
 				B3C4F8612ADA54E000E75C7D /* CardView.swift */,
+				B3C4F8632ADC46FE00E75C7D /* Cardify.swift */,
 				B3C4F83B2ACF15A200E75C7D /* AspectVGrid.swift */,
 				B3C4F8392ACF05CB00E75C7D /* SetGame.swift */,
 				B3C4F8372ACE2DCC00E75C7D /* SetCard.swift */,
@@ -150,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3C4F8382ACE2DCC00E75C7D /* SetCard.swift in Sources */,
+				B3C4F8642ADC46FE00E75C7D /* Cardify.swift in Sources */,
 				B3C4F82C2ACE2DA300E75C7D /* SetView.swift in Sources */,
 				B3C4F8622ADA54E000E75C7D /* CardView.swift in Sources */,
 				B3C4F83A2ACF05CB00E75C7D /* SetGame.swift in Sources */,

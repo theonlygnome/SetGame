@@ -18,10 +18,11 @@ struct CardView: View {
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(card.isMatched ? .black : .white)
-                .fill(card.isInUnmatchedSet ? .red : .white)
-                .strokeBorder(card.isSelected ? .blue : .black, lineWidth: card.isSelected ? 4 : 2)
+            let base = RoundedRectangle(cornerRadius: 12)
+            base.strokeBorder(card.isSelected ? .blue : .black, lineWidth: card.isSelected ? 4 : 2)
+                .background(base.fill(card.isDealt ? .white : .blue))
+                .background(base.fill(card.isMatched ? .black : .white))
+                .background(base.fill(card.isInUnmatchedSet ? .red : .white))
                 .opacity(card.isMatched ? 0.25 : 1)
                 .opacity(card.isInUnmatchedSet ? 0.5 : 1)
             VStack {
@@ -47,6 +48,8 @@ struct CardView: View {
         .animation(Animation.spring(response: responseValue, dampingFraction: 0.2, blendDuration: 0.2), value: card.isInUnmatchedSet)
     }
 }
+
+
 
 struct DiamondFillAndStroke: View {
     let card: SetCard.Card

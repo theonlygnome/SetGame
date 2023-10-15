@@ -14,6 +14,9 @@ struct SetCard {
     private(set) var cards: Array<Card>
     private(set) var dealtCards: Array<Card>
     
+    private var beginningCardCount: Int
+    private var endingCardCount: Int
+    
     var matchedSetExists: Bool {
         // A matched set exists
         dealtCards.filter { $0.isMatched }.count == 3 &&
@@ -28,12 +31,11 @@ struct SetCard {
         cards.filter { $0.isDiscarded }
     }
     
-    private var cardCount : Int
-    
     init() {
         dealtCards = [Card]()
         cards = [Card]()
-        cardCount = 0
+        beginningCardCount = 0
+        endingCardCount = 11
         let shapes = ["Diamond", "Squiggle", "Rectangle"]
         let counts = [1, 2, 3]
         let shading = [0.0, 0.5, 1.0]
@@ -52,13 +54,27 @@ struct SetCard {
         // cards.shuffle()
     }
     
+    mutating func discardCard(_ card: Card) {
+        if let dealtDiscardIndex = dealtCards.firstIndex(where: { $0.id == card.id }) {
+            if let discardIndex = cards.firstIndex(where: { $0.id == card.id } ) {
+                cards[discardIndex].isDiscarded = true
+                dealtCards.remove(at: dealtDiscardIndex)
+            }
+        }
+    }
+    
+    mutating func getCardsToDiscard() -> [Card] {
+        dealtCards.filter { $0.isMatched }
+    }
+    
     mutating func getCardsToDeal() -> [Card] {
         var cardsToDeal = [Card]()
-        if cardCount < cards.count {
-            for index in cardCount ... cardCount + 2 {
+        if endingCardCount < cards.count {
+            for index in beginningCardCount ... endingCardCount {
                 cardsToDeal.append(cards[index])
             }
-            cardCount += 3
+            beginningCardCount = endingCardCount + 1
+            endingCardCount += 3
         }
         
         return cardsToDeal
@@ -66,29 +82,20 @@ struct SetCard {
     
     mutating func dealCard(_ card: Card) {
         if let index = cards.firstIndex(where: { $0.id == card.id} ) {
-            cards[index].isDealt = true
             if let replacementIndex = dealtCards.firstIndex(where: { $0.isMatched }) {
-                var cardToDiscard = dealtCards[replacementIndex]
+                let cardToDiscard = dealtCards[replacementIndex]
                 if let discardIndex = cards.firstIndex(where: { $0.id == cardToDiscard.id } ) {
                     cards[discardIndex].isDiscarded = true
                 }
                 dealtCards[replacementIndex] = cards[index]
+                dealtCards[replacementIndex].isDealt = true
             } else {
                 dealtCards.append(cards[index])
+                let lastIndex = dealtCards.count
+                dealtCards[lastIndex - 1].isDealt = true
             }
+            cards[index].isDealt = true
         }
-    }
-    
-    mutating func deal() {
-
-            if cardCount < cards.count {
-                for index in cardCount ... cardCount + 2 {
-                    cards[index].isDealt = true
-                    dealtCards.append(cards[index])
-                }
-                cardCount += 3
-            }
-        
     }
     
     mutating func choose(_ card: Card) {
@@ -154,9 +161,10 @@ struct SetCard {
                     cards[card_index].isDiscarded = true
                 }
                 
-                cards[cardCount].isDealt = true
-                dealtCards[index] = cards[cardCount]
-                cardCount += 1
+                cards[endingCardCount].isDealt = true
+                dealtCards[index] = cards[endingCardCount]
+                endingCardCount += 1
+                beginningCardCount += 1
                 
             }
         }

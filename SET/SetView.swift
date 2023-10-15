@@ -23,6 +23,7 @@ struct SetView: View {
         VStack {
             Button(action: {
                 setGame.newGame()
+                deal()
             }, label: {
                 Text("New Game")
             })
@@ -55,7 +56,7 @@ struct SetView: View {
                     setGame.choose(card)
 
                     if setGame.matchedSetExists {
-                        deal()
+                        discardMatchedCards()
                     }
                 }
         }
@@ -97,6 +98,30 @@ struct SetView: View {
             delay += dealInterval
         }
     }
+    
+    private func discardMatchedCards() {
+        var delay: TimeInterval = 0
+        let cards = setGame.getCardsToDiscard()
+        for card in cards {
+            withAnimation(dealAnimation.delay(delay)) {
+                setGame.discardCard(card)
+            }
+            delay += dealInterval
+        }
+    }
+    
+    func getColorFromString(_ colorString: String) -> Color {
+        switch colorString {
+        case "purple":
+            return Color.purple
+        case "red":
+            return Color.red
+        case "green":
+            return Color.green
+        default:
+            return Color.yellow
+        }
+    }
 }
 
 struct Diamond: Shape {
@@ -111,6 +136,7 @@ struct Diamond: Shape {
         }
     }
 }
+
 
 #Preview {
     SetView(setGame: SetGame())

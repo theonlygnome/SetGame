@@ -29,10 +29,14 @@ class SetGame: ObservableObject {
     
     func newGame() {
         model = SetCard()
-        deal()
-        deal()
-        deal()
-        deal()
+    }
+    
+    func getCardsToDiscard() -> [Card] {
+        model.getCardsToDiscard()
+    }
+    
+    func discardCard(_ card: Card) {
+        model.discardCard(card)
     }
     
     func getCardsToDeal() -> [Card] {
@@ -41,10 +45,6 @@ class SetGame: ObservableObject {
     
     func dealCard(_ card: Card) {
         model.dealCard(card)
-    }
-    
-    func deal() {
-        model.deal()
     }
     
     func choose(_ card: Card) {
