@@ -1,7 +1,7 @@
 # SetGame
 ## SwiftUI Implementation of the game SET!
 
-This game is implmented against the requirements in the assignment for [Stanford's cs193p, Spring 2023](https://cs193p.sites.stanford.edu/2023), and some code, specifically AspectVGrid, was written by the Professor (note I am not a student and have been watching the course on YouTube)
+This game is implmented against the requirements in the assignment for [Stanford's cs193p, Spring 2023](https://cs193p.sites.stanford.edu/2023), and some code, specifically AspectVGrid and Cardify (which is not being used in this game at this time), was written by the Professor (note I am not a student and have been watching the course on YouTube)
 
 ### Examples of the game using an unshuffled deck
 
