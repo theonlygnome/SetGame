@@ -15,5 +15,5 @@ This game is implmented against the requirements in the assignment for [Stanford
 
 ### Current bugs:
 * "Deal" deck is face up.  I can make it "face down" but it wasn't animating flipping and dealing the cards one at a time.  Still working on this.
-* The contents of the cards are indiscernable if all 81 cards are dealt.  This could be dealt with by adding scrolling but playing the game and making matches being made renders this relatively unnecessary. 
+* The contents of the cards are indiscernable if all 81 cards are dealt.  This could be dealt with by adding scrolling but playing the game and making matches renders this relatively unnecessary. 
 
