@@ -1,7 +1,7 @@
 # SetGame
 ## SwiftUI Implementation of the game SET!
 
-This game is implmented against the request in the assignment for [Stanford's cs193p, Spring 2023](https://cs193p.sites.stanford.edu/2023), and some code, specifically AspectVGrid, was written by the Professor.
+This game is implmented against the requirements in the assignment for [Stanford's cs193p, Spring 2023](https://cs193p.sites.stanford.edu/2023), and some code, specifically AspectVGrid, was written by the Professor.
 
 ### Examples of the game using an unshuffled deck
 
