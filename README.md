@@ -7,11 +7,11 @@ This game is implmented against the request in the assignment for [Stanford's cs
 
 #### When a matched set has been selected, the cards will rotate once and show a grey background:
 
-![Simulator Screenshot - iPhone 14 Pro - Matched Set](https://github.com/theonlygnome/SetGame/assets/95313083/54ec1fb4-9d0c-458a-b3bb-701429df4e97)
+<img src="https://github.com/theonlygnome/SetGame/assets/95313083/54ec1fb4-9d0c-458a-b3bb-701429df4e97" width="200" height="400">
 
 #### When a mismatched set has been selected, the cards will shake momentarily and show a light red background:
 
-![Simulator Screenshot - iPhone 14 Pro - Unmatched Set](https://github.com/theonlygnome/SetGame/assets/95313083/da580140-a42c-4802-9f29-9b16cb1c90e6)
+<img src="https://github.com/theonlygnome/SetGame/assets/95313083/da580140-a42c-4802-9f29-9b16cb1c90e6" width="200" height="400">
 
 ### Current bugs:
 * "Deal" deck is face up.  I can make it "face down" but it wasn't animating flipping and dealing the cards one at a time.  Still working on this.
